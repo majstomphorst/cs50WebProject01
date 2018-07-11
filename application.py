@@ -31,18 +31,18 @@ def index():
 
 @app.route("/signin", methods=["GET", "POST"])
 def signin():
-
-    if request.method == "POST":
-        print(session)
-        return render_template("signin.html")
-    else:
-        print(session)
         return render_template("signin.html")
 
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    create_users_db()
+
+    print("hello!")
+
+    if request.method == "POST":
+        username = request.form.get("username")
+        print("POST")
+        print(username)
 
     return render_template("register.html")
 
