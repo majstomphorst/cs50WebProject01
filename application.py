@@ -37,12 +37,10 @@ def signin():
 @app.route("/register", methods=["GET", "POST"])
 def register():
 
-    print("hello!")
-
     if request.method == "POST":
         username = request.form.get("username")
-        print("POST")
-        print(username)
+        password = request.form.get("password")
+        print(username +"______" +password)
 
     return render_template("register.html")
 
