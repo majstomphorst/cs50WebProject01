@@ -1,9 +1,13 @@
 import os
 
-from flask import Flask, session, render_template, request
+from flask import Flask, redirect, render_template
+from flask import request, session,  url_for
+
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+
+from models import *
 
 app = Flask(__name__)
 
@@ -27,4 +31,29 @@ def index():
 
 @app.route("/signin", methods=["GET", "POST"])
 def signin():
-    return render_template("signin.html")
+
+    if request.method == "POST":
+        print(session)
+        return render_template("signin.html")
+    else:
+        print(session)
+        return render_template("signin.html")
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    create_users_db()
+
+    return render_template("register.html")
+
+
+def create_users_db():
+    db.execute("""CREATE TABLE users (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR NOT NULL,
+        password VARCHAR NOT NULL
+    );""")
+    db.commit()
+
+if __name__ == "__main__":
+    main()
