@@ -11,7 +11,13 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
-class Users:
+class User:
+
+    def __init__(self):
+        self.user_id = None
+        self.username = None
+        self.email = None
+        self.password = None
 
     def __init__(self, username, email, password):
         self.user_id = None

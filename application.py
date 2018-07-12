@@ -41,12 +41,16 @@ def register():
 
     if request.method == "POST":
 
-        username = request.form.get("username")
-        email = request.form.get("email")
-        password = request.form.get("password")
+        # TODO: check user input
 
-        new_user = Users(username, email, password)
-        print(new_user)
+        # crating empty user
+        new_user = User()
+
+        new_user.username = request.form.get("username")
+        new_user.email = request.form.get("email")
+        new_user.password = request.form.get("password")
+
+        new_user.register()
 
     return render_template("register.html")
 
