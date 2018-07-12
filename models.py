@@ -20,7 +20,8 @@ class Users:
         self.password = password
 
     def __str__(self):
-        return self.username + self.email + self.password
+        str = f"username: {self.username}\nemail: {self.email}\npassword: {self.password}"
+        return str
 
     def register(self):
         db.execute("""INSERT INTO users (username, email, password)
