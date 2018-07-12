@@ -37,10 +37,17 @@ def signin():
 @app.route("/register", methods=["GET", "POST"])
 def register():
 
+    # create_users_db()
+
     if request.method == "POST":
+
         username = request.form.get("username")
+        email = request.form.get("email")
         password = request.form.get("password")
-        print(username +"______" +password)
+
+        new_user = Users(username, email, password)
+
+        new_user.register()
 
     return render_template("register.html")
 
@@ -49,6 +56,7 @@ def create_users_db():
     db.execute("""CREATE TABLE users (
         id SERIAL PRIMARY KEY,
         username VARCHAR NOT NULL,
+        email VARCHAR NOT NULL,
         password VARCHAR NOT NULL
     );""")
     db.commit()
