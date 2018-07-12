@@ -19,6 +19,9 @@ class Users:
         self.email = email
         self.password = password
 
+    def __str__(self):
+        return self.username + self.email + self.password
+
     def register(self):
         db.execute("""INSERT INTO users (username, email, password)
                     VALUES (:username, :email, :password)""",

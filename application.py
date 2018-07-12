@@ -46,8 +46,7 @@ def register():
         password = request.form.get("password")
 
         new_user = Users(username, email, password)
-
-        new_user.register()
+        print(new_user)
 
     return render_template("register.html")
 
