@@ -27,6 +27,13 @@ db = scoped_session(sessionmaker(bind=engine))
 
 @app.route("/")
 def index():
+
+    users = db.execute("SELECT * FROM users")
+
+    for user in users:
+        print(user.username + "___" + user.password)
+
+
     return render_template("index.html")
 
 @app.route("/signin", methods=["GET", "POST"])
