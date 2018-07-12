@@ -28,16 +28,47 @@ db = scoped_session(sessionmaker(bind=engine))
 @app.route("/")
 def index():
 
+    if session["id"]:
+        print(session["id"])
+
     users = db.execute("SELECT * FROM users")
 
-    for user in users:
-        print(user.username + "___" + user.password)
+    return render_template("index.html", id = session["id"])
 
-
-    return render_template("index.html")
 
 @app.route("/signin", methods=["GET", "POST"])
 def signin():
+
+    if request.method == "POST":
+
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        if not username:
+            return apology("give a username!")
+        if not password:
+            return apology("give me a password!")
+
+        # query database of user
+        user = db.execute("""SELECT * FROM users WHERE username = :username
+                              AND password = :password""", {
+                          "username": username,
+                          "password": password}
+                          ).fetchall()
+        db.commit()
+        # print(user[0]['id'])
+
+        if not user:
+            return apology("no match!", "balen")
+
+        session["id"] = user[0]["id"]
+
+        print(session["id"])
+
+        return apology("NICE!" "working")
+
+    else:
+
         return render_template("signin.html")
 
 
@@ -70,6 +101,22 @@ def create_users_db():
         password VARCHAR NOT NULL
     );""")
     db.commit()
+
+
+def apology(top="", bottom=""):
+    """Renders message as an apology to user."""
+    def escape(s):
+        """
+        Escape special characters.
+
+        https://github.com/jacebrowning/memegen#special-characters
+        """
+        for old, new in [("-", "--"), (" ", "-"), ("_", "__"), ("?", "~q"),
+                         ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
+            s = s.replace(old, new)
+        return s
+    return render_template("apology.html", top=escape(top), bottom=escape(bottom))
+
 
 if __name__ == "__main__":
     main()
