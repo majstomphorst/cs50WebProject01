@@ -1,13 +1,15 @@
 import os
 
 from flask import Flask, redirect, render_template
-from flask import request, session,  url_for
+from flask import request, session, url_for
+from functools import wraps
 
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 from models import *
+from helpers import *
 
 app = Flask(__name__)
 
@@ -24,16 +26,9 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
-
 @app.route("/")
 def index():
-
-    if session["id"]:
-        print(session["id"])
-
-    users = db.execute("SELECT * FROM users")
-
-    return render_template("index.html", id = session["id"])
+    return render_template("index.html", sigin = "")
 
 
 @app.route("/signin", methods=["GET", "POST"])
@@ -117,6 +112,5 @@ def apology(top="", bottom=""):
         return s
     return render_template("apology.html", top=escape(top), bottom=escape(bottom))
 
-
-if __name__ == "__main__":
+if __name__=="__main__":
     main()
