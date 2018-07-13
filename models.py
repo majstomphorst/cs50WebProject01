@@ -13,13 +13,7 @@ db = scoped_session(sessionmaker(bind=engine))
 
 class User:
 
-    def __init__(self):
-        self.user_id = None
-        self.username = None
-        self.email = None
-        self.password = None
-
-    def __init__(self, username, email, password):
+    def __init__(self, username = None, email = None, password = None):
         self.user_id = None
         self.username = username
         self.email = email

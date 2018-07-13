@@ -29,7 +29,7 @@ db = scoped_session(sessionmaker(bind=engine))
 @app.route("/", methods=["GET"])
 def index():
     print("index call?")
-    return render_template("index.html", sigin = "")
+    return render_template("index.html", sigin = True)
 
 @app.route("/signin", methods=["POST"])
 def signin():
@@ -39,6 +39,9 @@ def signin():
 def register():
     return "register call"
 
+@app.route("/signout", methods=["POST"])
+def signout():
+    return "signout call"
 
 
 # @app.route("/signin", methods=["GET", "POST"])
