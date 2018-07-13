@@ -36,9 +36,9 @@
             </li>
           </ul>
           {% if not sigin %}
-            <form class="form-inline my-2 my-lg-0" action="{{ url_for('signin') }}" method="post">
-              <input class="form-control mr-sm-2" type="text" placeholder="Email">
-              <input class="form-control mr-sm-2" type="password" placeholder="Password">
+            <form class="form-inline my-2 my-lg-0" name="sigin" action="{{ url_for('signin') }}" method="post">
+              <input class="form-control mr-sm-2" name="username" type="text" placeholder="Username">
+              <input class="form-control mr-sm-2" name="password"type="password" placeholder="Password">
               <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sigin</button>
             </form>
           {% endif %}

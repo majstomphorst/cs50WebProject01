@@ -26,66 +26,75 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
-@app.route("/")
+@app.route("/", methods=["GET"])
 def index():
+    print("index call?")
     return render_template("index.html", sigin = "")
 
-
-@app.route("/signin", methods=["GET", "POST"])
+@app.route("/signin", methods=["POST"])
 def signin():
+    return "sigin call"
 
-    if request.method == "POST":
-
-        username = request.form.get("username")
-        password = request.form.get("password")
-
-        if not username:
-            return apology("give a username!")
-        if not password:
-            return apology("give me a password!")
-
-        # query database of user
-        user = db.execute("""SELECT * FROM users WHERE username = :username
-                              AND password = :password""", {
-                          "username": username,
-                          "password": password}
-                          ).fetchall()
-        db.commit()
-        # print(user[0]['id'])
-
-        if not user:
-            return apology("no match!", "balen")
-
-        session["id"] = user[0]["id"]
-
-        print(session["id"])
-
-        return apology("NICE!" "working")
-
-    else:
-
-        return render_template("signin.html")
-
-
-@app.route("/register", methods=["GET", "POST"])
+@app.route("/register", methods=["POST"])
 def register():
+    return "register call"
 
-    # create_users_db()
 
-    if request.method == "POST":
 
-        # TODO: check user input
+# @app.route("/signin", methods=["GET", "POST"])
+# def signin():
+#
+#     if request.method == "POST":
+#
+#         username = request.form.get("username")
+#         password = request.form.get("password")
+#
+#         if not username:
+#             return apology("give a username!")
+#         if not password:
+#             return apology("give me a password!")
+#
+#         # query database of user
+#         user = db.execute("""SELECT * FROM users WHERE username = :username
+#                               AND password = :password""", {
+#                           "username": username,
+#                           "password": password}
+#                           ).fetchall()
+#         db.commit()
+#         # print(user[0]['id'])
+#
+#         if not user:
+#             return apology("no match!", "balen")
+#
+#         session["id"] = user[0]["id"]
+#
+#         print(session["id"])
+#
+#         return apology("NICE!" "working")
+#
+#     else:
+#
+#         return render_template("signin.html")
 
-        # crating empty user
-        new_user = User()
 
-        new_user.username = request.form.get("username")
-        new_user.email = request.form.get("email")
-        new_user.password = request.form.get("password")
-
-        new_user.register()
-
-    return render_template("register.html")
+# @app.route("/register", methods=["GET", "POST"])
+# def register():
+#
+#     # create_users_db()
+#     if request.method == "POST":
+#
+#         # TODO: check user input
+#
+#         # crating empty user
+#         new_user = User()
+#
+#         new_user.username = request.form.get("username")
+#         new_user.email = request.form.get("email")
+#         new_user.password = request.form.get("password")
+#
+#         new_user.register()
+#
+#     return render_template("register.html")
 
 
 def create_users_db():
@@ -96,21 +105,6 @@ def create_users_db():
         password VARCHAR NOT NULL
     );""")
     db.commit()
-
-
-def apology(top="", bottom=""):
-    """Renders message as an apology to user."""
-    def escape(s):
-        """
-        Escape special characters.
-
-        https://github.com/jacebrowning/memegen#special-characters
-        """
-        for old, new in [("-", "--"), (" ", "-"), ("_", "__"), ("?", "~q"),
-                         ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
-            s = s.replace(old, new)
-        return s
-    return render_template("apology.html", top=escape(top), bottom=escape(bottom))
 
 if __name__=="__main__":
     main()
