@@ -38,11 +38,11 @@
               <a class="nav-link" href="#">Link</a>
             </li>
           </ul>
-          {% if session.user_id %}
+          {% if session.id %}
             <form class="form-inline my-2 my-lg-0" name="sigin" action="{{ url_for('signout') }}" method="post">
               <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item">
-                  <span class="navbar-text">Hello {{ session.user_id }}</span>
+                  <span class="navbar-text">Hello {{ session.username }}</span>
                 </li>
                 <li class="nav-item">
                   <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Sign Out</button>
@@ -63,7 +63,7 @@
     </div>
     {% endif %}
 
-  {% if not session.user_id %}
+  {% if not session.id %}
     <div class="jumbotron">
       <div class="container">
         <div class="row">
