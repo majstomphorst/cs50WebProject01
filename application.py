@@ -26,79 +26,30 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
-@app.route("/", methods=["GET"])
+@app.route("/")
 def index():
-    print("index call?")
-    return render_template("index.html", sigin = True)
+    print("call index")
+    return render_template("index.html", sigin = session["user_id"])
 
-@app.route("/signin", methods=["POST"])
+@app.route("/signin", methods=["GET", "POST"])
 def signin():
-    return "sigin call"
+    print("call signin")
+    session["user_id"] = "Maxim"
+    return redirect(url_for("index"))
 
 @app.route("/register", methods=["POST"])
 def register():
-    return "register call"
+    print("call register")
+    session["user_id"] = "Maxim"
+    return redirect(url_for("index"))
 
-@app.route("/signout", methods=["POST"])
+@app.route("/signout", methods=["GET", "POST"])
+@login_required
 def signout():
-    return "signout call"
-
-
-# @app.route("/signin", methods=["GET", "POST"])
-# def signin():
-#
-#     if request.method == "POST":
-#
-#         username = request.form.get("username")
-#         password = request.form.get("password")
-#
-#         if not username:
-#             return apology("give a username!")
-#         if not password:
-#             return apology("give me a password!")
-#
-#         # query database of user
-#         user = db.execute("""SELECT * FROM users WHERE username = :username
-#                               AND password = :password""", {
-#                           "username": username,
-#                           "password": password}
-#                           ).fetchall()
-#         db.commit()
-#         # print(user[0]['id'])
-#
-#         if not user:
-#             return apology("no match!", "balen")
-#
-#         session["id"] = user[0]["id"]
-#
-#         print(session["id"])
-#
-#         return apology("NICE!" "working")
-#
-#     else:
-#
-#         return render_template("signin.html")
-
-
-# @app.route("/register", methods=["GET", "POST"])
-# def register():
-#
-#     # create_users_db()
-#     if request.method == "POST":
-#
-#         # TODO: check user input
-#
-#         # crating empty user
-#         new_user = User()
-#
-#         new_user.username = request.form.get("username")
-#         new_user.email = request.form.get("email")
-#         new_user.password = request.form.get("password")
-#
-#         new_user.register()
-#
-#     return render_template("register.html")
-
+    print("call signout")
+    session["user_id"] = None
+    print(session)
+    return redirect(url_for("index"))
 
 def create_users_db():
     db.execute("""CREATE TABLE users (
@@ -109,5 +60,5 @@ def create_users_db():
     );""")
     db.commit()
 
-if __name__=="__main__":
+if __name__ == "__main__":
     main()
