@@ -28,27 +28,23 @@ db = scoped_session(sessionmaker(bind=engine))
 
 @app.route("/")
 def index():
-    print("call index")
-    return render_template("index.html", sigin = session["user_id"])
+    return render_template("index.html")
 
 @app.route("/signin", methods=["GET", "POST"])
 def signin():
-    print("call signin")
     session["user_id"] = "Maxim"
+    print("signin")
     return redirect(url_for("index"))
 
 @app.route("/register", methods=["POST"])
 def register():
     print("call register")
-    session["user_id"] = "Maxim"
     return redirect(url_for("index"))
 
 @app.route("/signout", methods=["GET", "POST"])
 @login_required
 def signout():
-    print("call signout")
-    session["user_id"] = None
-    print(session)
+    session.pop('user_id', None)
     return redirect(url_for("index"))
 
 def create_users_db():
