@@ -14,6 +14,14 @@
 </head>
 
 <body>
+  {% if get_flashed_messages() %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Holy guacamole!</strong> {{ get_flashed_messages() | join(" ") }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  {% endif %}
 
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -79,6 +87,7 @@
 
     <div class="container">
       <h1>head</h1>
+      {% block your_books %} {% endblock %}
     </div>
 
     <!-- Optional JavaScript -->

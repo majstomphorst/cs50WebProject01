@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask, redirect, render_template
-from flask import request, session, url_for
+from flask import request, session, url_for, flash
 from functools import wraps
 
 from flask_session import Session
@@ -30,18 +30,38 @@ db = scoped_session(sessionmaker(bind=engine))
 def index():
     return render_template("index.html")
 
-@app.route("/signin", methods=["GET", "POST"])
+@app.route("/signin", methods=["POST"])
 def signin():
-    session["user_id"] = "Maxim"
-    print("signin")
+
+    session.clear()
+
+    username = request.form.get("username")
+    password = request.form.get("password")
+
+    if not username and not password:
+        flash("username and/or password")
+        return redirect(url_for("index"))
+
+    print("findme!")
+    print(username)
+    print(password)
+
+    i = db.execute("SELECT * FROM users WHERE username = :username AND password = :password ", {"username": username, "password": password}).fetchall()
+    db.commit()
+    print(i)
+
+
+
+    # session["user_id"] = "Maxim"
     return redirect(url_for("index"))
 
 @app.route("/register", methods=["POST"])
 def register():
     print("call register")
+    session["user_id"] = "Maxim"
     return redirect(url_for("index"))
 
-@app.route("/signout", methods=["GET", "POST"])
+@app.route("/signout", methods=["POST"])
 @login_required
 def signout():
     session.pop('user_id', None)
