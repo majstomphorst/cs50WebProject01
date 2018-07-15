@@ -42,7 +42,7 @@
             <form class="form-inline my-2 my-lg-0" name="sigin" action="{{ url_for('signout') }}" method="post">
               <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item">
-                  <span class="navbar-text">Hello {{ session.username }}</span>
+                  <span class="navbar-text">Hello {{ session.username }} <br> </span>
                 </li>
                 <li class="nav-item">
                   <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Sign Out</button>
@@ -63,7 +63,6 @@
     </div>
     {% endif %}
 
-  {% if not session.id %}
     <div class="jumbotron">
       <div class="container">
         <div class="row">
@@ -71,6 +70,7 @@
             <h1 class="display-4">Find your next book!</h1>
             <h3 class="display-5">Downt have a acount?</h3>
           </div>
+          {% if not session.id %}
           <div class="col-md-4">
             <h4 class "display-6">Create one!</h4>
             <form class="form-register" action="{{ url_for('register') }}" method="post">
@@ -79,11 +79,12 @@
               <input type="password" name="password" placeholder="Enter your password" class="form-control">
               <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
             </form>
+            {% endif %}
           </div>
         </div>
       </div>
     </div>
-  {% endif %}
+
 
     <div class="container">
       <h1>head</h1>
