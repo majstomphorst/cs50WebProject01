@@ -71,5 +71,10 @@ def signout():
     session.clear()
     return redirect(url_for("index"))
 
+@app.route("/search", methods=["GET","POST"])
+@login_required
+def search():
+    return render_template("search.html")
+
 if __name__ == "__main__":
     main()
