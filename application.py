@@ -74,6 +74,11 @@ def signout():
 @app.route("/search", methods=["GET","POST"])
 @login_required
 def search():
+    print("search")
+
+    print(request.form.get("look_up"))
+
+
     return render_template("search.html")
 
 if __name__ == "__main__":
