@@ -71,15 +71,26 @@ def signout():
     session.clear()
     return redirect(url_for("index"))
 
+@app.route("/select", methods=["POST"])
+@login_required
+def select():
+    print(request.form.get("select"))
+    return render_template("search.html")
+
 @app.route("/search", methods=["GET","POST"])
 @login_required
 def search():
-    print("search")
 
-    print(request.form.get("look_up"))
+    if request.method == "POST":
+        search_query = request.form.get("look_up")
+        search1 = str(search_query) + '%'
 
-
-    return render_template("search.html")
+        result = db.execute("SELECT * FROM books WHERE title LIKE :search1 OR title = :search_query LIMIT 10",
+        {"search_query": search_query,
+        "search1": search1}).fetchall()
+        return render_template("search.html", result = result)
+    else:
+        return render_template("search.html")
 
 if __name__ == "__main__":
     main()
