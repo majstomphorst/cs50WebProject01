@@ -32,9 +32,7 @@
     <td>{{ item[2] }}</td>
     <td>{{ item[3] }}</td>
     <td>
-      <form>
-        <button class="btn btn-info" action="{{ url_for('select') }}" name="select" value="{{ item[0] }}" type="submit">select</button>
-      </form>
+      <a class="btn btn-outline-info" href="/search/{{ item[0] }}">select</a>
     </td>
   </tr>
   {% endfor %}

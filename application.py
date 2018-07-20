@@ -92,5 +92,10 @@ def search():
     else:
         return render_template("search.html")
 
+@app.route("/search/<string:name>")
+def hello(name):
+    name = name.capitalize()
+    return "<h1>Hello, {}!<h1>".format(name)
+
 if __name__ == "__main__":
     main()
