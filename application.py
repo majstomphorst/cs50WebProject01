@@ -1,9 +1,7 @@
 import os
 
-from flask import Flask, redirect, render_template
-from flask import request, session, url_for, flash
+from flask import Flask, redirect, render_template, request, session, url_for, flash
 from functools import wraps
-
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -92,10 +90,10 @@ def search():
     else:
         return render_template("search.html")
 
-@app.route("/search/<string:name>")
-def hello(name):
-    name = name.capitalize()
-    return "<h1>Hello, {}!<h1>".format(name)
+@app.route("/result/<string:isbn>")
+def result(isbn):
+
+    return render_template("result.html", isbn = isbn)
 
 if __name__ == "__main__":
     main()

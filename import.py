@@ -15,7 +15,7 @@ def main():
 
 def create_books_db():
     db.execute("""CREATE TABLE books (
-        isbn BIGINT PRIMARY KEY,
+        isbn TEXT PRIMARY KEY,
         title TEXT,
         author TEXT,
         year INT
@@ -30,10 +30,9 @@ def import_books():
     i = 0
 
     for isbn, title, author, year in reader:
-        isbn = int(isbn.replace('X','10'))
 
         db.execute("INSERT INTO books (isbn, title, author, year) VALUES (:isbn, :title, :author, :year)",
-                {"isbn": isbn, "title": title, "author": author, "year": int(year)})
+                {"isbn": str(isbn), "title": title, "author": author, "year": int(year)})
         db.commit()
 
 
