@@ -105,12 +105,13 @@ def result(isbn):
     result = root.find('./search/results/work/best_book')
 
     book = {}
-
     book['title'] = result.find('./title').text
     book['image_url'] = result.find('./image_url').text
     book['author'] = result.find('./author/name').text
+    book['isbn'] = isbn
+    book['average_rating'] = root.find('./search/results/work/average_rating').text
 
-    return render_template("result.html", isbn = isbn, head = "Found a book!", book = book)
+    return render_template("result.html", head = "Found a book!", book = book)
 
 if __name__ == "__main__":
     main()
