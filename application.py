@@ -5,6 +5,8 @@ from functools import wraps
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+import xml.etree.ElementTree as et
+import urllib.request
 
 from models import *
 from helpers import *
@@ -91,9 +93,24 @@ def search():
         return render_template("search.html")
 
 @app.route("/result/<string:isbn>")
+@login_required
 def result(isbn):
 
-    return render_template("result.html", isbn = isbn)
+    url = "https://www.goodreads.com/search/index.xml?key=YwERiouZJhFQ1W1Qj0baWQ&q=" + str(isbn)
+    f = urllib.request.urlopen(url)
+
+    tree = et.parse(f)
+    root = tree.getroot()
+
+    result = root.find('./search/results/work/best_book')
+
+    book = {}
+
+    book['title'] = result.find('./title').text
+    book['image_url'] = result.find('./image_url').text
+    book['author'] = result.find('./author/name').text
+
+    return render_template("result.html", isbn = isbn, head = "Found a book!", book = book)
 
 if __name__ == "__main__":
     main()
