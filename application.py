@@ -111,7 +111,16 @@ def result(isbn):
     book['isbn'] = isbn
     book['average_rating'] = root.find('./search/results/work/average_rating').text
 
-    return render_template("result.html", head = "Found a book!", book = book)
+
+    review = db.execute("SELECT * FROM review WHERE isbn = :isbn",
+    {"isbn": isbn}).fetchall()
+
+    print(review)
+
+    return render_template("result.html",
+                            head = "Found a book!",
+                            book = book,
+                            review = review)
 
 if __name__ == "__main__":
     main()

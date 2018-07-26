@@ -40,3 +40,13 @@ def import_books():
 
 if __name__ == "__main__":
     main()
+
+
+"""CREATE TABLE review (
+    isbn TEXT PRIMARY KEY,
+    review_text TEXT,
+    score INT,
+    timestamp timestamp default current_timestamp
+);"""
+
+"""INSERT INTO review (isbn, review_text, score) VALUES ('0553589377', 'this is review text', '5');"""

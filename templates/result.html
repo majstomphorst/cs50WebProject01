@@ -15,6 +15,11 @@
     </div>
   </div>
   <div class="col-8">
+    {% if review %}
+      {% for r in review -%}
+        <h1>{{ r }}</h1>
+      {%- endfor %}
+    {% endif %}
     <form>
       <div class="form-group">
         <label for="exampleFormControlTextarea1">Example textarea</label>
