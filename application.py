@@ -112,15 +112,31 @@ def result(isbn):
     book['average_rating'] = root.find('./search/results/work/average_rating').text
 
 
-    review = db.execute("SELECT * FROM review WHERE isbn = :isbn",
+    reviews = db.execute("SELECT * FROM review WHERE isbn = :isbn",
     {"isbn": isbn}).fetchall()
-
-    print(review)
 
     return render_template("result.html",
                             head = "Found a book!",
                             book = book,
-                            review = review)
+                            reviews = reviews)
+
+@app.route("/submit_review", methods=["POST"])
+@login_required
+def submit_review():
+
+    review_isbn = request.form.get("review_isbn")
+    review_text = request.form.get("review_text")
+    review_score = request.form.get("review_score")
+
+    db.execute("INSERT INTO review (isbn, review_text, score) VALUES (:isbn, :review_text, :score)", {
+    "isbn": review_isbn,
+    "review_text": review_text,
+    "score": review_score
+    })
+    db.commit()
+
+    return redirect(url_for("result", isbn=review_isbn))
+
 
 if __name__ == "__main__":
     main()

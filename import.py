@@ -43,7 +43,8 @@ if __name__ == "__main__":
 
 
 """CREATE TABLE review (
-    isbn TEXT PRIMARY KEY,
+    review_id SERIAL PRIMARY KEY,
+    isbn TEXT,
     review_text TEXT,
     score INT,
     timestamp timestamp default current_timestamp
