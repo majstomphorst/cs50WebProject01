@@ -138,5 +138,35 @@ def submit_review():
     return redirect(url_for("result", isbn=review_isbn))
 
 
+@app.route("/api/<string:isbn>")
+@login_required
+def api(isbn):
+
+    url = "https://www.goodreads.com/search/index.xml?key=YwERiouZJhFQ1W1Qj0baWQ&q=" + str(isbn)
+    f = urllib.request.urlopen(url)
+
+    tree = et.parse(f)
+    root = tree.getroot()
+
+    result = root.find('./search/results/work/best_book')
+
+    book = {}
+    book['title'] = result.find('./title').text
+    book['author'] = result.find('./author/name').text
+    day = root.find('./search/results/work/original_publication_day').text
+    month = root.find('./search/results/work/original_publication_month').text
+    year = root.find('./search/results/work/original_publication_year').text
+    book['publication_date'] = day + ":" + month + ":" + year
+
+    book["text_reviews_count"] = root.find('./search/results/work/text_reviews_count').text
+    book["average_rating"] = root.find('./search/results/work/average_rating').text 
+
+
+    book['isbn'] = isbn
+
+    return f"<h1>{book}</h1>"
+"""the book’s title, author, publication date, ISBN number, review count, average score.  """
+
+
 if __name__ == "__main__":
     main()

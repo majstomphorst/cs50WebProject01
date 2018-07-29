@@ -9,7 +9,6 @@ engine = create_engine("postgres://jrxmibonjppwdp:861680f71f8990135bc6cff0724f2f
 db = scoped_session(sessionmaker(bind=engine))
 
 def main():
-    print("hello")
     create_books_db()
     import_books()
 
@@ -34,8 +33,6 @@ def import_books():
         db.execute("INSERT INTO books (isbn, title, author, year) VALUES (:isbn, :title, :author, :year)",
                 {"isbn": str(isbn), "title": title, "author": author, "year": int(year)})
         db.commit()
-
-
 
 
 if __name__ == "__main__":
