@@ -9,7 +9,6 @@ import xml.etree.ElementTree as et
 import urllib.request
 
 from models import *
-from helpers import *
 
 app = Flask(__name__)
 
@@ -74,7 +73,7 @@ def signout():
 @app.route("/select", methods=["POST"])
 @login_required
 def select():
-    return render_template("search.html")
+    return render_template("index.html")
 
 @app.route("/search", methods=["GET","POST"])
 @login_required
@@ -103,21 +102,26 @@ def result(isbn):
 
     result = root.find('./search/results/work/best_book')
 
-    book = {}
-    book['title'] = result.find('./title').text
-    book['image_url'] = result.find('./image_url').text
-    book['author'] = result.find('./author/name').text
-    book['isbn'] = isbn
-    book['average_rating'] = root.find('./search/results/work/average_rating').text
+    book = Book()
+    book.title = result.find('./title').text
+    book.author = result.find('./author/name').text
+    book.isbn = isbn
+    book.image_url = result.find('./image_url').text
+    book.average_rating = root.find('./search/results/work/average_rating').text
 
+    book1 = {}
+    book1['title'] = result.find('./title').text
+    book1['image_url'] = result.find('./image_url').text
+    book1['author'] = result.find('./author/name').text
+    book1['isbn'] = isbn
+    book1['average_rating'] = root.find('./search/results/work/average_rating').text
 
-    reviews = db.execute("SELECT * FROM review WHERE isbn = :isbn",
-    {"isbn": isbn}).fetchall()
+    book.get_reviews()
 
     return render_template("result.html",
                             head = "Found a book!",
-                            book = book,
-                            reviews = reviews)
+                            book = book1,
+                            reviews = book.reviews)
 
 @app.route("/submit_review", methods=["POST"])
 @login_required

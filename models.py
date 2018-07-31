@@ -6,6 +6,7 @@ from flask import request, session,  url_for, flash
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+from functools import wraps
 
 # Set up database
 engine = create_engine(os.getenv("DATABASE_URL"))
@@ -20,7 +21,9 @@ class User:
         self.password = password
 
     def __str__(self):
-        str = f"username: {self.username}\nemail: {self.email}\npassword: {self.password}"
+        str = f"username: {self.username}\n\
+                email: {self.email}\n\
+                password:{self.password}"
         return str
 
     def register(self):
@@ -42,7 +45,6 @@ class User:
         self.id = user[0]["id"]
         session["id"] = user[0]["id"]
         session["username"] = user[0]["username"]
-
 
         db.commit()
 
@@ -69,3 +71,28 @@ class User:
             password VARCHAR NOT NULL
         );""")
         db.commit()
+
+class Book:
+
+    def __init__(self, title = None, author = None, isbn = None,
+                 image_url = None, average_rating = None,
+                 reviews = None):
+        self.title = title
+        self.author = author
+        self.isbn = isbn
+        self.image_url = image_url
+        self.average_rating = average_rating
+        self.reviews = reviews
+
+    def get_reviews(self):
+        self.reviews = db.execute("SELECT * FROM review WHERE isbn = :isbn",
+        {"isbn": self.isbn}).fetchall()
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("id") is None:
+            return redirect(url_for("index"))
+        return f(*args, **kwargs)
+    return decorated_function
