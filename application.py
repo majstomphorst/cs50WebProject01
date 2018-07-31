@@ -74,7 +74,6 @@ def signout():
 @app.route("/select", methods=["POST"])
 @login_required
 def select():
-    print(request.form.get("select"))
     return render_template("search.html")
 
 @app.route("/search", methods=["GET","POST"])
@@ -88,9 +87,9 @@ def search():
         result = db.execute("SELECT * FROM books WHERE title LIKE :search1 OR title = :search_query LIMIT 10",
         {"search_query": search_query,
         "search1": search1}).fetchall()
-        return render_template("search.html", result = result)
+        return render_template("index.html", result = result)
     else:
-        return render_template("search.html")
+        return render_template("index.html")
 
 @app.route("/result/<string:isbn>")
 @login_required
@@ -159,7 +158,7 @@ def api(isbn):
     book['publication_date'] = day + ":" + month + ":" + year
 
     book["text_reviews_count"] = root.find('./search/results/work/text_reviews_count').text
-    book["average_rating"] = root.find('./search/results/work/average_rating').text 
+    book["average_rating"] = root.find('./search/results/work/average_rating').text
 
 
     book['isbn'] = isbn
